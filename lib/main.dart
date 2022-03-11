@@ -56,11 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.black,
       body: Center(
         child: DemiCircularGaugeWidget(
-          width: 140,
-          maxValue: 100,
+          width: 250,
+          maxValue: 5,
           minValue: 0,
-          thresholdValue: 80,
-          valueUpdateStream: Stream<num>.periodic(const Duration(seconds: 1), (x) => x),
+          thresholdValue: 4,
+          valueUpdateStream: Stream<num>.periodic(const Duration(seconds: 1), (x) => x * 0.1),
         ),
       ),
     );
