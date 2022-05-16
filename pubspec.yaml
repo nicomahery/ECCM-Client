@@ -16,7 +16,10 @@ dependencies:
 
   eccm_widget:
     path: ../eccm_widget
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.4
+  shared_preferences: ^2.0.15
+  get_it: ^7.2.0
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:
