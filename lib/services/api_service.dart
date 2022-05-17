@@ -80,8 +80,10 @@ class ApiService {
     try {
       var response = await Dio().get(
           '${this._configService.apiLocation}$TRIP_IDS_PATH',
-          options: Options(headers: {
-            this._configService.apiSecretHeader!: this._configService.apiSecret!
+          options: Options(
+            contentType: 'application/json',
+            headers: {
+              this._configService.apiSecretHeader!: this._configService.apiSecret!
           })
       );
       if (response.statusCode != 200) {
@@ -110,6 +112,7 @@ class ApiService {
       return response.data == PING_GOOD_RESPONSE;
     } catch (e) {
       print(e);
+      print('EEEEEEEEEE');
     }
     finally {
       return false;

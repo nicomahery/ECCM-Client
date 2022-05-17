@@ -19,6 +19,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Home Page'),
+        actions: [
+          IconButton(
+              onPressed: () => context.push(SettingPage.PATH),
+              icon: const Icon(Icons.settings)
+          )
+        ],
+      ),
       body: Center(
         child: Text('Pas hello world'),
       ),
