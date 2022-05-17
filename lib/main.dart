@@ -1,14 +1,14 @@
-import 'package:eccm_widget/widgets/BigArcGaugeWidget.dart';
-import 'package:eccm_widget/widgets/DemiCircularGaugeWidget.dart';
+import 'package:eccm_client/pages/widget_test_page.dart';
+import 'package:eccm_client/utils/get_it_instance.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-
-  runApp(const MyApp());
+  setupLocator();
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -18,47 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const WidgetTestPage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            BigArcGaugeWidget(
-              width: 250,
-              maxValue: 5,
-              minValue: 0,
-              thresholdValue: 4,
-              valueUpdateStream: Stream<num>.periodic(const Duration(seconds: 1), (x) => (x * 0.1) % 5),
-            ),
-            DemiCircularGaugeWidget(
-              width: 250,
-              maxValue: 5,
-              minValue: 0,
-              thresholdValue: 4,
-              valueUpdateStream: Stream<num>.periodic(const Duration(seconds: 1), (x) => (x * 0.1) % 5),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

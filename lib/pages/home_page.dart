@@ -1,0 +1,26 @@
+import 'package:eccm_client/services/api_service.dart';
+import 'package:flutter/material.dart';
+
+import '../utils/get_it_instance.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final ApiService _apiService = locator<ApiService>();
+
+  @override
+  Widget build(BuildContext context) {
+    if (!this._apiService.isApiConfig()) {
+
+
+    }
+    return Container();
+  }
+}
+
+
