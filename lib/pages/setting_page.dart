@@ -20,6 +20,21 @@ class _SettingPageState extends State<SettingPage> {
   final TextEditingController _apiSecretHeaderController = TextEditingController();
   final TextEditingController _apiSecretController = TextEditingController();
 
+
+  @override
+  void initState() {
+    super.initState();
+    if (this._configService.apiLocation != null) {
+      this._apiLocationController.text = this._configService.apiLocation!;
+    }
+    if (this._configService.apiSecretHeader != null) {
+      this._apiSecretHeaderController.text = this._configService.apiSecretHeader!;
+    }
+    if (this._configService.apiSecret != null) {
+      this._apiSecretController.text = this._configService.apiSecret!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,17 +69,14 @@ class _SettingPageState extends State<SettingPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                initialValue: this._configService.apiLocation,
                 validator: (value) => this._validateField(value),
                 controller: this._apiLocationController,
               ),
               TextFormField(
-                initialValue: this._configService.apiSecretHeader,
                 validator: (value) => this._validateField(value),
                 controller: this._apiSecretHeaderController,
               ),
               TextFormField(
-                initialValue: this._configService.apiSecret,
                 validator: (value) => this._validateField(value),
                 controller: this._apiSecretController,
               ),

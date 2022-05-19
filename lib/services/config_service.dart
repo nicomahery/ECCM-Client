@@ -13,17 +13,16 @@ class ConfigService{
   String? webSocketServerLocation;
   String? webSocketServerServer;
 
-  ConfigService() {
-    this.setupParametersFromPreferences();
-  }
+  ConfigService._();
 
-  void setupParametersFromPreferences() async {
+  static Future<ConfigService> create() async {
+    ConfigService configService = ConfigService._();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    this.apiLocation = sharedPreferences.getString(API_LOCATION_SHARED_PREFERENCE_KEY);
-    this.apiSecretHeader = sharedPreferences.getString(API_SECRET_HEADER_SHARED_PREFERENCE_KEY);
-    this.apiSecret = sharedPreferences.getString(API_SECRET_SHARED_PREFERENCE_KEY);
-    this.webSocketServerLocation = sharedPreferences.getString(WEB_SOCKET_SERVER_LOCATION_SHARED_PREFERENCE_KEY);
-    this.webSocketServerServer = sharedPreferences.getString(WEB_SOCKET_SERVER_SECRET_PREFERENCE_KEY);
+    configService.apiLocation = sharedPreferences.getString(API_LOCATION_SHARED_PREFERENCE_KEY);
+    configService.apiSecretHeader = sharedPreferences.getString(API_SECRET_HEADER_SHARED_PREFERENCE_KEY);
+    configService.apiSecret = sharedPreferences.getString(API_SECRET_SHARED_PREFERENCE_KEY);
+    configService.webSocketServerLocation = sharedPreferences.getString(WEB_SOCKET_SERVER_LOCATION_SHARED_PREFERENCE_KEY);
+    return configService;
   }
 
   void saveParametersToPreferences() async {

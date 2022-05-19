@@ -2,13 +2,15 @@ import 'package:eccm_client/pages/home_page.dart';
 import 'package:eccm_client/pages/setting_page.dart';
 import 'package:eccm_client/pages/widget_test_page.dart';
 import 'package:eccm_client/services/api_service.dart';
+import 'package:eccm_client/services/config_service.dart';
 import 'package:eccm_client/utils/get_it_instance.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupLocator();
+  ConfigService configService = await ConfigService.create();
+  setupLocator(configService);
   runApp(App());
 }
 
@@ -27,14 +29,20 @@ class App extends StatelessWidget {
         builder: (BuildContext context, GoRouterState state) => const SettingPage()
       ),
     ],
-    redirect: (state) {
-      final ApiService apiService = locator<ApiService>();
-      final bool isApiConfig = apiService.isApiConfig();
-      final bool inSetting = state.subloc == SettingPage.PATH;
-      if (!isApiConfig) return inSetting ? null : SettingPage.PATH;
-      if (inSetting) return HomePage.PATH;
-
-      return null;
+    redirect: (GoRouterState state) {
+      String? redirection = null;
+      if (state.location == HomePage.PATH) {
+        final ApiService apiService = locator<ApiService>();
+        final bool isApiConfig = apiService.isApiConfig();
+        final bool inSetting = state.subloc == SettingPage.PATH;
+        if (!isApiConfig) {
+          redirection = inSetting ? null : SettingPage.PATH;
+        }
+        else if (inSetting) {
+          redirection = HomePage.PATH;
+        }
+      }
+      return redirection;
     }
   );
 

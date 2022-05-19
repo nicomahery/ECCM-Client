@@ -1,16 +1,19 @@
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:eccm_client/entities/carlog.dart';
 import 'package:eccm_client/services/config_service.dart';
 import 'package:eccm_client/utils/get_it_instance.dart';
-
+import 'package:http/http.dart' as http;
 import '../entities/trip.dart';
 import 'package:dio/dio.dart';
 
-const String TRIPS_CONTROLLER_PATH = '/api/trips/';
+const String TRIPS_CONTROLLER_PATH = 'api/trips/';
 const String TRIP_IDS_PATH = '${TRIPS_CONTROLLER_PATH}ids';
-const String CAR_LOG_CONTROLLER_PATH = '/api/carlogs/';
+const String CAR_LOG_CONTROLLER_PATH = 'api/carlogs/';
 const String CAR_LOG_BY_TRIP_ID_PATH = '${CAR_LOG_CONTROLLER_PATH}/findByTripId/';
-const String PING_PATH = '/api/ping';
+const String PING_PATH = 'api/ping';
 const String PING_GOOD_RESPONSE = 'pong';
 
 class ApiService {
@@ -77,45 +80,56 @@ class ApiService {
     if (this.isApiConfig()) {
       return null;
     }
+    var client = http.Client();
+    var returnValue = null;
     try {
-      var response = await Dio().get(
-          '${this._configService.apiLocation}$TRIP_IDS_PATH',
-          options: Options(
-            contentType: 'application/json',
-            headers: {
-              this._configService.apiSecretHeader!: this._configService.apiSecret!
-          })
+      var response = await client.get(
+        Uri.https(this._configService.apiLocation!, TRIP_IDS_PATH),
+        headers: {
+          'Content-Type': 'application/json',
+          this._configService.apiSecretHeader!: this._configService.apiSecret!
+        }
       );
       if (response.statusCode != 200) {
-        return null;
+        returnValue = null;
       }
-      return List<String>.of(response.data);
+      else {
+        print(jsonDecode(utf8.decode(response.bodyBytes)) as List<String>);
+        returnValue = jsonDecode(utf8.decode(response.bodyBytes)) as List<String>;
+      }
     } catch (e) {
       print(e);
     }
     finally {
-      return null;
+      client.close();
+      return returnValue;
     }
   }
 
   Future<bool> ping() async {
+    var client = http.Client();
+    var returnValue = false;
     try {
-      var response = await Dio().get(
-          '${this._configService.apiLocation}$PING_PATH',
-          options: Options(headers: {
+      var response = await client.get(
+          Uri.https(this._configService.apiLocation!, PING_PATH),
+          headers: {
+            'Content-Type': 'application/json',
             this._configService.apiSecretHeader!: this._configService.apiSecret!
-          })
+          }
       );
       if (response.statusCode != 200) {
-        return false;
+        returnValue = false;
       }
-      return response.data == PING_GOOD_RESPONSE;
+      else {
+        returnValue = response.body == PING_GOOD_RESPONSE;
+      }
     } catch (e) {
       print(e);
       print('EEEEEEEEEE');
     }
     finally {
-      return false;
+      client.close();
+      return returnValue;
     }
   }
 }

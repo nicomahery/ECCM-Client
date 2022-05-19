@@ -4,7 +4,8 @@ import 'package:get_it/get_it.dart';
 
 GetIt locator = GetIt.instance;
 
-void setupLocator() {
-  locator.registerSingleton(ConfigService());
+void setupLocator(ConfigService configService) async {
+
+  locator.registerSingleton(configService);
   locator.registerSingleton(ApiService());
 }
