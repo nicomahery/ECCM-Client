@@ -61,7 +61,6 @@ class ApiService {
     var client = http.Client();
     var returnValue = null;
     try {
-      print('REQUEST TO: ' + '$CAR_LOG_BY_TRIP_ID_PATH$tripId');
       var response = await client.get(
           Uri.https(this._configService.apiLocation!, '$CAR_LOG_BY_TRIP_ID_PATH$tripId'),
           headers: {
@@ -69,7 +68,6 @@ class ApiService {
             this._configService.apiSecretHeader!: this._configService.apiSecret!
           }
       );
-      print(response.body);
       if (response.statusCode == 200) {
         returnValue = (jsonDecode(utf8.decode(response.bodyBytes)) as List).map((carLog) => CarLog.fromJson(carLog)).toList();
       }
@@ -124,7 +122,6 @@ class ApiService {
       }
     } catch (e) {
       print(e);
-      print('EEEEEEEEEE');
     }
     finally {
       client.close();
