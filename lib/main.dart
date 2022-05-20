@@ -1,5 +1,6 @@
 import 'package:eccm_client/pages/home_page.dart';
 import 'package:eccm_client/pages/setting_page.dart';
+import 'package:eccm_client/pages/trip_page.dart';
 import 'package:eccm_client/pages/widget_test_page.dart';
 import 'package:eccm_client/services/api_service.dart';
 import 'package:eccm_client/services/config_service.dart';
@@ -27,6 +28,10 @@ class App extends StatelessWidget {
       GoRoute(
         path: SettingPage.PATH,
         builder: (BuildContext context, GoRouterState state) => const SettingPage()
+      ),
+      GoRoute(
+        path: TripPage.PATH + '/:id',
+        builder: (BuildContext context, GoRouterState state) => TripPage(tripId: state.params['id'])
       ),
     ],
     redirect: (GoRouterState state) {

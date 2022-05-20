@@ -7,11 +7,14 @@ class Trip {
   String id;
   DateTime startTime;
   DateTime endTime;
-  Coordinate startCoordinate;
-  Coordinate endCoordinate;
+  late Duration duration;
+  Coordinate? startCoordinate;
+  Coordinate? endCoordinate;
 
   Trip(this.id, this.startTime, this.endTime, this.startCoordinate,
-      this.endCoordinate);
+      this.endCoordinate) {
+    this.duration = this.endTime.difference(this.startTime);
+  }
 
   factory Trip.fromJson(Map<String, dynamic> json) {
     DateFormat dateFormat = new DateFormat(DATE_TIME_FORMAT);
@@ -19,8 +22,13 @@ class Trip {
         json['id'],
         dateFormat.parse(json['startTime'], true),
         dateFormat.parse(json['endTime'], true) ,
-        Coordinate.fromJson(json['startCoordinate']),
-        Coordinate.fromJson(json['endCoordinate'])
+        json['startCoordinate'] != null ? Coordinate.fromJson(json['startCoordinate']) : null,
+        json['endCoordinate'] != null ? Coordinate.fromJson(json['endCoordinate']) : null
     );
+  }
+
+  static String convertDateTime(DateTime dateTime, String dateTimeFormat) {
+    DateFormat dateFormat = new DateFormat(dateTimeFormat);
+    return dateFormat.format(dateTime);
   }
 }
