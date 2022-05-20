@@ -1,6 +1,7 @@
 import 'package:eccm_client/entities/carlog.dart';
 import 'package:eccm_client/services/api_service.dart';
 import 'package:eccm_client/utils/get_it_instance.dart';
+import 'package:eccm_client/utils/static_const_values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
@@ -32,7 +33,7 @@ class _TripPageState extends State<TripPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text('Trip'),
+          title: const Text('Trip summary'),
         ),
         body: () {
           if (this.widget.trip == null) {
@@ -44,14 +45,14 @@ class _TripPageState extends State<TripPage> {
           return FutureBuilder(
             builder: (context, AsyncSnapshot<List<CarLog>?> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               }
               if (snapshot.connectionState == ConnectionState.done && snapshot.hasError) {
                 print(snapshot.error);
-                return Icon(Icons.error, color: Colors.red);
+                return Center(child: Icon(Icons.error, color: Colors.red));
               }
               if (snapshot.connectionState == ConnectionState.none || snapshot.data == null) {
-                return Text('No Car Logs');
+                return Center(child: Text('No Car Logs'));
               }
 
               List<CarLog> carLogs = snapshot.data!;
@@ -65,20 +66,26 @@ class _TripPageState extends State<TripPage> {
                       }
 
                       return Container(
-                        height: height * 0.5,
+                        height: height * 0.20,
                         width: width,
                         child: FlutterMap(
                           options: MapOptions(
                             bounds: LatLngBounds(this._getFirstCoordinate(carLogs), this._getLastCoordinate(carLogs)),
                             boundsOptions: FitBoundsOptions(padding: EdgeInsets.all(8.0)),
                             zoom: 13.0,
+                            interactiveFlags: InteractiveFlag.none
                           ),
                           layers: [
                             TileLayerOptions(
                               urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                               subdomains: ['a', 'b', 'c'],
                               attributionBuilder: (_) {
-                                return Text("© OpenStreetMap contributors");
+                                return Text(
+                                  "© OpenStreetMap contributors",
+                                  style: TextStyle(
+                                      fontSize: width * 0.025
+                                  ),
+                                );
                               },
                             ),
                             PolylineLayerOptions(
@@ -86,15 +93,111 @@ class _TripPageState extends State<TripPage> {
                                 Polyline(
                                   points: this._filterWithGPSData(carLogs).map((e)
                                   => LatLng(e.gpsLatitude!, e.gpsLongitude!)).toList(),
-                                  color: Colors.red,
-                                  strokeWidth: 3
+                                  color: Colors.indigo,
+                                  strokeWidth: 5
+                                ),
+                              ]
+                            ),
+                            MarkerLayerOptions(
+                              markers: [
+                                Marker(
+                                    point: this._getFirstCoordinate(carLogs),
+                                    builder: (context) => Icon(
+                                      Icons.location_on,
+                                      color: Colors.red,
+                                    )
+                                ),
+                                Marker(
+                                    point: this._getLastCoordinate(carLogs),
+                                    builder: (context) => Icon(
+                                      Icons.location_on,
+                                      color: Colors.blueAccent,
+                                    )
                                 )
                               ]
                             )
                           ],
                         ),
                       );
-                    } ()
+                    } (),
+                    Padding(
+                      padding: EdgeInsets.only(top: height * 0.015),
+                      child: Row(
+                        children: [
+                          Spacer(flex: 1),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Colors.red,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: width * 0.02),
+                                    child: Text(
+                                      Trip.convertDateTime(this.widget.trip!.startTime, DATE_TIME_DISPLAY_FORMAT),
+                                      style: TextStyle(
+                                        fontSize: width * 0.04
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.arrow_downward_sharp,
+                                    color: Colors.grey,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: width * 0.02),
+                                    child: Text(
+                                      '${this.widget.trip!.duration.inMinutes}min',
+                                      style: TextStyle(
+                                        fontSize: width * 0.04
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Colors.blueAccent,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: width * 0.02),
+                                    child: Text(
+                                      Trip.convertDateTime(this.widget.trip!.endTime, DATE_TIME_DISPLAY_FORMAT),
+                                      style: TextStyle(
+                                        fontSize: width * 0.04
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Spacer(flex: 4),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                Trip.convertDateTime(this.widget.trip!.startTime, DATE_TIME_DISPLAY_FORMAT),
+                                style: TextStyle(
+                                    fontSize: width * 0.04
+                                ),
+                              ),
+                            ],
+                          ),
+                          Spacer(flex: 1),
+                        ],
+                      ),
+                    ),
                   ],
               );
             },
