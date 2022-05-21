@@ -12,12 +12,12 @@ import '../services/trip_service.dart';
 class TripPage extends StatefulWidget {
   static const String PATH = '/trip';
   late final Trip? trip;
-  final TripService tripService = locator<TripService>();
+  final TripService _tripService = locator<TripService>();
   final ApiService _apiService = locator<ApiService>();
 
   TripPage({required String? tripId}) {
     if (tripId != null) {
-      this.trip = this.tripService.getTripForId(tripId);
+      this.trip = this._tripService.getTripForId(tripId);
     }
   }
 
@@ -43,6 +43,7 @@ class _TripPageState extends State<TripPage> {
           }
 
           return FutureBuilder(
+            future: this.widget._tripService.getCarLogsForId(this.widget.trip!.id),
             builder: (context, AsyncSnapshot<List<CarLog>?> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -72,7 +73,7 @@ class _TripPageState extends State<TripPage> {
                           options: MapOptions(
                             bounds: LatLngBounds(this._getFirstCoordinate(carLogs), this._getLastCoordinate(carLogs)),
                             boundsOptions: FitBoundsOptions(padding: EdgeInsets.all(8.0)),
-                            zoom: 13.0,
+                            zoom: 5,
                             interactiveFlags: InteractiveFlag.none
                           ),
                           layers: [
@@ -120,66 +121,70 @@ class _TripPageState extends State<TripPage> {
                         ),
                       );
                     } (),
-                    Padding(
+                    Container(
                       padding: EdgeInsets.only(top: height * 0.015),
                       child: Row(
                         children: [
                           Spacer(flex: 1),
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.location_on,
-                                    color: Colors.red,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: width * 0.02),
-                                    child: Text(
-                                      Trip.convertDateTime(this.widget.trip!.startTime, DATE_TIME_DISPLAY_FORMAT),
-                                      style: TextStyle(
-                                        fontSize: width * 0.04
+                          Container(
+                            width: width * 0.5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      color: Colors.red,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: width * 0.02),
+                                      child: Text(
+                                        Trip.convertDateTime(this.widget.trip!.startTime, DATE_TIME_DISPLAY_FORMAT),
+                                        style: TextStyle(
+                                          fontSize: width * 0.04
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.arrow_downward_sharp,
-                                    color: Colors.grey,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: width * 0.02),
-                                    child: Text(
-                                      '${this.widget.trip!.duration.inMinutes}min',
-                                      style: TextStyle(
-                                        fontSize: width * 0.04
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_downward_sharp,
+                                      color: Colors.grey,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: width * 0.02),
+                                      child: Text(
+                                        this.widget.trip!.getDurationString(),
+                                        style: TextStyle(
+                                          fontSize: width * 0.04
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.location_on,
-                                    color: Colors.blueAccent,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: width * 0.02),
-                                    child: Text(
-                                      Trip.convertDateTime(this.widget.trip!.endTime, DATE_TIME_DISPLAY_FORMAT),
-                                      style: TextStyle(
-                                        fontSize: width * 0.04
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      color: Colors.blueAccent,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: width * 0.02),
+                                      child: Text(
+                                        Trip.convertDateTime(this.widget.trip!.endTime, DATE_TIME_DISPLAY_FORMAT),
+                                        style: TextStyle(
+                                          fontSize: width * 0.04
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                           Spacer(flex: 4),
                           Column(
@@ -201,7 +206,6 @@ class _TripPageState extends State<TripPage> {
                   ],
               );
             },
-            future: this.widget._apiService.getAllCarLogsByTripId(this.widget.trip!.id),
           );
         } ()
     );
