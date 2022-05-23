@@ -37,6 +37,8 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -63,24 +65,42 @@ class _SettingPageState extends State<SettingPage> {
         ],
       ),
       body: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                validator: (value) => this._validateField(value),
-                controller: this._apiLocationController,
-              ),
-              TextFormField(
-                validator: (value) => this._validateField(value),
-                controller: this._apiSecretHeaderController,
-              ),
-              TextFormField(
-                validator: (value) => this._validateField(value),
-                controller: this._apiSecretController,
-              ),
-            ],
+        child: Container(
+          padding: EdgeInsets.only(top: height * 0.02),
+          width: width * 0.8,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  validator: (value) => this._validateField(value),
+                  controller: this._apiLocationController,
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.link),
+                    hintText: 'example.com',
+                    labelText: 'API Location *',
+                  ),
+                ),
+                TextFormField(
+                  validator: (value) => this._validateField(value),
+                  controller: this._apiSecretHeaderController,
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.short_text),
+                    labelText: 'Secret header *',
+                  ),
+                ),
+                TextFormField(
+                  obscureText: true,
+                  validator: (value) => this._validateField(value),
+                  controller: this._apiSecretController,
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.key),
+                    labelText: 'Secret value *',
+                  ),
+                ),
+              ],
+            ),
           ),
         )
       ),

@@ -1,5 +1,4 @@
 import 'package:eccm_client/entities/carlog.dart';
-import 'package:eccm_client/services/api_service.dart';
 import 'package:eccm_client/utils/get_it_instance.dart';
 import 'package:eccm_client/utils/static_const_values.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ class TripPage extends StatefulWidget {
   static const String PATH = '/trip';
   late final Trip? trip;
   final TripService _tripService = locator<TripService>();
-  final ApiService _apiService = locator<ApiService>();
 
   TripPage({required String? tripId}) {
     if (tripId != null) {

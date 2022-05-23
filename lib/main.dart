@@ -1,7 +1,6 @@
 import 'package:eccm_client/pages/home_page.dart';
 import 'package:eccm_client/pages/setting_page.dart';
 import 'package:eccm_client/pages/trip_page.dart';
-import 'package:eccm_client/pages/widget_test_page.dart';
 import 'package:eccm_client/services/api_service.dart';
 import 'package:eccm_client/services/config_service.dart';
 import 'package:eccm_client/utils/get_it_instance.dart';
@@ -60,6 +59,7 @@ class App extends StatelessWidget {
       ),
       routerDelegate: this._router.routerDelegate,
       routeInformationParser: this._router.routeInformationParser,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
