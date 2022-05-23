@@ -105,14 +105,14 @@ class _TripPageState extends State<TripPage> {
                                     point: this._getFirstCoordinate(carLogs),
                                     builder: (context) => Icon(
                                       Icons.location_on,
-                                      color: Colors.red,
+                                      color: Colors.blueAccent,
                                     )
                                 ),
                                 Marker(
                                     point: this._getLastCoordinate(carLogs),
                                     builder: (context) => Icon(
                                       Icons.location_on,
-                                      color: Colors.blueAccent,
+                                      color: Colors.red,
                                     )
                                 )
                               ]
@@ -135,7 +135,8 @@ class _TripPageState extends State<TripPage> {
                                   children: [
                                     Icon(
                                       Icons.location_on,
-                                      color: Colors.red,
+                                      color: Colors.blueAccent,
+                                      size: width * 0.04,
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: width * 0.02),
@@ -149,28 +150,11 @@ class _TripPageState extends State<TripPage> {
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_downward_sharp,
-                                      color: Colors.grey,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: width * 0.02),
-                                      child: Text(
-                                        this.widget.trip!.getDurationString(),
-                                        style: TextStyle(
-                                          fontSize: width * 0.04
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
                                   children: [
                                     Icon(
                                       Icons.location_on,
-                                      color: Colors.blueAccent,
+                                      color: Colors.red,
+                                      size: width * 0.04,
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: width * 0.02),
@@ -191,11 +175,50 @@ class _TripPageState extends State<TripPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
-                                Trip.convertDateTime(this.widget.trip!.startTime, DATE_TIME_DISPLAY_FORMAT),
-                                style: TextStyle(
-                                    fontSize: width * 0.04
-                                ),
+                              FutureBuilder(
+                                builder: (context, AsyncSnapshot<num?> snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return Center(child: CircularProgressIndicator());
+                                  }
+                                  if (snapshot.connectionState == ConnectionState.done && snapshot.hasError) {
+                                    print(snapshot.error);
+                                    return Center(child: Icon(Icons.error, color: Colors.red));
+                                  }
+                                  if (snapshot.connectionState == ConnectionState.none || snapshot.data == null) {
+                                    return Container();
+                                  }
+
+                                  return Row(
+                                    children: [
+                                      Text(
+                                            (){
+                                          if (snapshot.data! >= 1000) {
+                                            return '${(snapshot.data!/1000).toStringAsFixed(1)}km';
+                                          }
+                                          return '${snapshot.data!.toStringAsFixed(0)}m';
+                                        }(),
+                                        style: TextStyle(
+                                            fontSize: width * 0.04
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                                future: this.widget._tripService.getDistanceForId(this.widget.trip!.id),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    this.widget.trip!.getDurationString(),
+                                    style: TextStyle(
+                                        fontSize: width * 0.04
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.access_alarm,
+                                    size: width * 0.04,
+                                  )
+                                ],
                               ),
                             ],
                           ),

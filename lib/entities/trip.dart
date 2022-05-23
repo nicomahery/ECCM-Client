@@ -12,6 +12,7 @@ class Trip {
   LatLng? startCoordinate;
   LatLng? endCoordinate;
   List<CarLog>? carLogs;
+  num? distance;
 
   Trip(this.id, this.startTime, this.endTime, this.startCoordinate,
       this.endCoordinate) {
@@ -38,9 +39,13 @@ class Trip {
     String ret = '';
     if (this.duration.inHours > 0) {
       ret += '${this.duration.inHours}h ';
+      ret += '${(this.duration.inMinutes/60).toStringAsFixed(0)}min';
+      return ret;
     }
     if (this.duration.inMinutes > 0) {
       ret += '${this.duration.inMinutes}min';
+      ret += '${(this.duration.inSeconds/60).toStringAsFixed(0)}s';
+      return ret;
     }
     if (this.duration.inSeconds > 0 && ret == '') {
       ret += '${this.duration.inSeconds}s';
