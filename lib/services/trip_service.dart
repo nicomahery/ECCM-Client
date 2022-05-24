@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import '../entities/carlog.dart';
 import '../entities/trip.dart';
 import '../utils/get_it_instance.dart';
+import '../utils/metric.dart';
 import 'api_service.dart';
 
 class TripService {
@@ -26,6 +27,7 @@ class TripService {
     }
     if (trip.carLogs == null) {
       trip.carLogs = await this._apiService.getAllCarLogsByTripId(id);
+      trip.carLogs?.sort((a, b) => a.deviceTime.compareTo(b.deviceTime));
     }
 
     return trip.carLogs;
@@ -52,5 +54,25 @@ class TripService {
     }
 
     return trip.distance;
+  }
+
+  Future<Metric?> getMetricById(String metric, String id) async {
+    List<CarLog>? carLogs = await this.getCarLogsForId(id);
+    if (carLogs == null) {
+      return null;
+    }
+
+    switch (metric) {
+      case 'SPEED':
+        Map<DateTime, num> map = Map();
+        carLogs.forEach((e) {
+          if (e.speed != null) {
+            map.putIfAbsent(e.deviceTime, () => (e.speed!));
+          }
+        });
+        return Metric(title: metric, data: map);
+      default:
+        return null;
+    }
   }
 }

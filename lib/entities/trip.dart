@@ -43,7 +43,7 @@ class Trip {
       return ret;
     }
     if (this.duration.inMinutes > 0) {
-      ret += '${this.duration.inMinutes}min';
+      ret += '${this.duration.inMinutes}min ';
       ret += '${(this.duration.inSeconds/60).toStringAsFixed(0)}s';
       return ret;
     }

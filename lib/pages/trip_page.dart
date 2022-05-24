@@ -1,12 +1,15 @@
 import 'package:eccm_client/entities/carlog.dart';
 import 'package:eccm_client/utils/get_it_instance.dart';
 import 'package:eccm_client/utils/static_const_values.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
+import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../entities/trip.dart';
 import '../services/trip_service.dart';
+import '../utils/metric.dart';
 
 class TripPage extends StatefulWidget {
   static const String PATH = '/trip';
@@ -55,7 +58,6 @@ class _TripPageState extends State<TripPage> {
               }
 
               List<CarLog> carLogs = snapshot.data!;
-              carLogs.sort((a, b) => a.deviceTime.compareTo(b.deviceTime));
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -199,6 +201,10 @@ class _TripPageState extends State<TripPage> {
                                             fontSize: width * 0.04
                                         ),
                                       ),
+                                      Icon(
+                                        Icons.route,
+                                        size: width * 0.04,
+                                      )
                                     ],
                                   );
                                 },
@@ -223,6 +229,141 @@ class _TripPageState extends State<TripPage> {
                           Spacer(flex: 1),
                         ],
                       ),
+                    ),
+                    DropdownButton<String>(
+                      items: [
+                        DropdownMenuItem(
+                          child: Text('test'),
+                          value: 'test',
+                        ),
+                        DropdownMenuItem(
+                          child: Text('test2'),
+                          value: 'test2',
+                        )
+                      ],
+                      onChanged: (String? value) {
+                        print(value);
+                      },
+                      value: 'test',
+                    ),
+                    FutureBuilder(
+                        future: this.widget._tripService.getMetricById('SPEED', this.widget.trip!.id),
+                        builder: (context,
+                            AsyncSnapshot<Metric?> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.done && snapshot.hasError) {
+                            print(snapshot.error);
+                            return Center(child: Icon(
+                                Icons.error, color: Colors.red));
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.none || snapshot.data == null) {
+                            return Center(child: Text('No Metric'));
+                          }
+
+                          Metric metric = snapshot.data!;
+                          if (metric.data.isEmpty) {
+                            return Center(child: Text('No Metric'));
+                          }
+
+                          double intervalX = (metric.data2.length) /  (this.widget.trip!.duration.inMinutes < 1 ? 1 : 3);
+                          double intervalY = (metric.maxValue - metric.minValue) / ((metric.maxValue - metric.minValue) < 4? 3 : 4);
+                          return Container(
+                            width: width * 0.9,
+                            height: height * 0.3,
+                            child: LineChart(
+                                LineChartData(
+
+                                  minY: metric.minValue.toDouble(),
+                                  maxY: metric.maxValue.toDouble(),
+                                  minX: 1,
+                                  maxX: metric.data2.length.toDouble(),
+                                  borderData: FlBorderData(
+                                      show: true,
+                                      border: Border.all(color: const Color(0xff37434d), width: 1)),
+                                  gridData: FlGridData(
+                                    show: true,
+                                    drawVerticalLine: true,
+                                    horizontalInterval: intervalY,
+                                    verticalInterval: intervalX,
+                                    getDrawingHorizontalLine: (value) {
+                                      return FlLine(
+                                        color: const Color(0xff37434d),
+                                        strokeWidth: 1,
+                                      );
+                                    },
+                                    getDrawingVerticalLine: (value) {
+                                      return FlLine(
+                                        color: const Color(0xff37434d),
+                                        strokeWidth: 1,
+                                      );
+                                    },
+                                  ),
+                                  titlesData: FlTitlesData(
+                                    show: true,
+                                    rightTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    topTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    leftTitles: AxisTitles(
+                                      sideTitles: SideTitles(
+                                        showTitles: true,
+                                        interval: intervalY,
+                                        getTitlesWidget:  (double value, TitleMeta meta) {
+                                          return Text(
+                                              value.toInt().toString(),
+                                              style: TextStyle(
+                                                color: Color(0xff67727d),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                              textAlign: TextAlign.left
+                                          );
+                                        },
+                                        reservedSize: 42,
+                                      ),
+                                    ),
+                                    bottomTitles: AxisTitles(
+                                      sideTitles: SideTitles(
+                                        showTitles: true,
+                                        reservedSize: 30,
+                                        interval: intervalX,
+                                        getTitlesWidget: (double value, TitleMeta meta) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(top: 8.0),
+                                            child: Text(
+                                                new DateFormat(intervalX == 1 ? HOUR_WITH_SECONDS_DISPLAY_FORMAT : HOUR_DISPLAY_FORMAT).format(metric.data.keys.toList()[value.toInt() - 1]),
+                                                style: TextStyle(
+                                                  color: Color(0xff68737d),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                ),
+                                                textAlign: TextAlign.left
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  lineBarsData: [
+                                    LineChartBarData(
+                                      spots: metric.data2.entries.map((e) => FlSpot(e.key.toDouble(), e.value.toDouble())).toList(),
+                                      dotData: FlDotData(
+                                        show: false,
+                                      ),
+
+                                    )
+                                  ],
+                                )
+                            ),
+                          );
+                        }
                     ),
                   ],
               );
@@ -253,3 +394,4 @@ class _TripPageState extends State<TripPage> {
     return carLogsFiltered;
   }
 }
+

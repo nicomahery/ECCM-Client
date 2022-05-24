@@ -1,5 +1,6 @@
 import 'package:eccm_client/entities/trip.dart';
 import 'package:eccm_client/pages/setting_page.dart';
+import 'package:eccm_client/pages/trip_list_page.dart';
 import 'package:eccm_client/services/trip_service.dart';
 import 'package:eccm_client/widgets/trip_summary_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TripService _tripService = locator<TripService>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,30 +31,14 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Center(
-        child: FutureBuilder(
-          builder: (context, AsyncSnapshot<List<Trip>?> snapshot) {
-            if (snapshot.connectionState == ConnectionState.none) {
-              return CircularProgressIndicator();
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            }
-            if (snapshot.connectionState == ConnectionState.done && snapshot.hasError) {
-              print(snapshot.error);
-              return Icon(Icons.error, color: Colors.red);
-            }
-
-            List<Trip> trips = snapshot.data!;
-            trips.sort((a, b) => b.startTime.compareTo(a.startTime));
-            return ListView.builder(
-                itemCount: trips.length,
-                itemBuilder: (context, index) {
-                  return TripSummaryCardWidget(trip: snapshot.data![index]);
-                }
-            );
-          },
-          future: this._tripService.getAllTrips(),
-        ),
+        child: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () => context.push(TripListPage.PATH), 
+                child: Text('Trips')
+            )
+          ],
+        )
       ),
     );
   }
