@@ -1,12 +1,7 @@
-import 'package:eccm_client/entities/trip.dart';
 import 'package:eccm_client/pages/setting_page.dart';
 import 'package:eccm_client/pages/trip_list_page.dart';
-import 'package:eccm_client/services/trip_service.dart';
-import 'package:eccm_client/widgets/trip_summary_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../utils/get_it_instance.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
