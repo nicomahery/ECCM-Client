@@ -11,7 +11,7 @@ class ConfigService{
   String? apiSecretHeader;
   String? apiSecret;
   String? webSocketServerLocation;
-  String? webSocketServerServer;
+  String? webSocketServerSecret;
 
   ConfigService._();
 
@@ -22,6 +22,7 @@ class ConfigService{
     configService.apiSecretHeader = sharedPreferences.getString(API_SECRET_HEADER_SHARED_PREFERENCE_KEY);
     configService.apiSecret = sharedPreferences.getString(API_SECRET_SHARED_PREFERENCE_KEY);
     configService.webSocketServerLocation = sharedPreferences.getString(WEB_SOCKET_SERVER_LOCATION_SHARED_PREFERENCE_KEY);
+    configService.webSocketServerSecret = sharedPreferences.getString(WEB_SOCKET_SERVER_SECRET_PREFERENCE_KEY);
     return configService;
   }
 
@@ -35,8 +36,8 @@ class ConfigService{
         : sharedPreferences.setString(API_SECRET_SHARED_PREFERENCE_KEY, this.apiSecret!);
     this.webSocketServerLocation == null ? sharedPreferences.remove(WEB_SOCKET_SERVER_LOCATION_SHARED_PREFERENCE_KEY)
         : sharedPreferences.setString(WEB_SOCKET_SERVER_LOCATION_SHARED_PREFERENCE_KEY, this.webSocketServerLocation!);
-    this.webSocketServerServer == null ? sharedPreferences.remove(WEB_SOCKET_SERVER_SECRET_PREFERENCE_KEY)
-        : sharedPreferences.setString(WEB_SOCKET_SERVER_SECRET_PREFERENCE_KEY, this.webSocketServerServer!);
+    this.webSocketServerSecret == null ? sharedPreferences.remove(WEB_SOCKET_SERVER_SECRET_PREFERENCE_KEY)
+        : sharedPreferences.setString(WEB_SOCKET_SERVER_SECRET_PREFERENCE_KEY, this.webSocketServerSecret!);
   }
 
 

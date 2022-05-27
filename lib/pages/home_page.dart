@@ -1,3 +1,4 @@
+import 'package:eccm_client/pages/live_page.dart';
 import 'package:eccm_client/pages/setting_page.dart';
 import 'package:eccm_client/pages/trip_list_page.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -28,10 +31,25 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           children: [
-            ElevatedButton(
-                onPressed: () => context.push(TripListPage.PATH), 
-                child: Text('Trips')
-            )
+            Spacer(),
+            Container(
+              width: width * 0.7,
+              height: height * 0.2,
+              child: ElevatedButton(
+                  onPressed: () => context.push(TripListPage.PATH),
+                  child: Text('Trips')
+              ),
+            ),
+            Spacer(),
+            Container(
+              width: width * 0.7,
+              height: height * 0.2,
+              child: ElevatedButton(
+                  onPressed: () => context.push(LivePage.PATH),
+                  child: Text('Live')
+              ),
+            ),
+            Spacer(),
           ],
         )
       ),

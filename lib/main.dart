@@ -1,4 +1,5 @@
 import 'package:eccm_client/pages/home_page.dart';
+import 'package:eccm_client/pages/live_page.dart';
 import 'package:eccm_client/pages/setting_page.dart';
 import 'package:eccm_client/pages/trip_list_page.dart';
 import 'package:eccm_client/pages/trip_page.dart';
@@ -32,6 +33,10 @@ class App extends StatelessWidget {
       GoRoute(
         path: TripListPage.PATH,
         builder: (BuildContext context, GoRouterState state) => const TripListPage()
+      ),
+      GoRoute(
+        path: LivePage.PATH,
+        builder: (BuildContext context, GoRouterState state) => const LivePage()
       ),
       GoRoute(
         path: TripPage.PATH + '/:id',

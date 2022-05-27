@@ -245,6 +245,7 @@ class _TripPageState extends State<TripPage> {
                         print(value);
                       },
                       value: 'test',
+
                     ),
                     FutureBuilder(
                         future: this.widget._tripService.getMetricById('SPEED', this.widget.trip!.id),
