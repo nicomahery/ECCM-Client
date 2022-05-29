@@ -125,92 +125,94 @@ class _SettingPageState extends State<SettingPage> {
           )
         ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: height * 0.05),
-              width: width * 0.8,
-              child: Form(
-                key: _apiFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'API Settings (used for trip summary)',
-                      style: TextStyle(
-                          color: this._apiConnectionStatusColor,
-                          fontWeight: FontWeight.bold
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: height * 0.05),
+                width: width * 0.8,
+                child: Form(
+                  key: _apiFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'API Settings (used for trip summary)',
+                        style: TextStyle(
+                            color: this._apiConnectionStatusColor,
+                            fontWeight: FontWeight.bold
+                        ),
                       ),
-                    ),
-                    TextFormField(
-                      validator: (value) => this._validateField(value),
-                      controller: this._apiLocationController,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.link),
-                        hintText: 'example.com',
-                        labelText: 'API Location *',
+                      TextFormField(
+                        validator: (value) => this._validateField(value),
+                        controller: this._apiLocationController,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.link),
+                          hintText: 'example.com',
+                          labelText: 'API Location *',
+                        ),
                       ),
-                    ),
-                    TextFormField(
-                      validator: (value) => this._validateField(value),
-                      controller: this._apiSecretHeaderController,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.short_text),
-                        labelText: 'Secret header *',
+                      TextFormField(
+                        validator: (value) => this._validateField(value),
+                        controller: this._apiSecretHeaderController,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.short_text),
+                          labelText: 'Secret header *',
+                        ),
                       ),
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      validator: (value) => this._validateField(value),
-                      controller: this._apiSecretController,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.key),
-                        labelText: 'Secret value *',
+                      TextFormField(
+                        obscureText: true,
+                        validator: (value) => this._validateField(value),
+                        controller: this._apiSecretController,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.key),
+                          labelText: 'Secret value *',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: height * 0.05),
-              width: width * 0.8,
-              child: Form(
-                key: _socketFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Socket Settings (used for live data)',
-                      style: TextStyle(
-                          color: this._socketConnectionStatusColor,
-                          fontWeight: FontWeight.bold
+              Container(
+                padding: EdgeInsets.only(top: height * 0.05),
+                width: width * 0.8,
+                child: Form(
+                  key: _socketFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Socket Settings (used for live data)',
+                        style: TextStyle(
+                            color: this._socketConnectionStatusColor,
+                            fontWeight: FontWeight.bold
+                        ),
                       ),
-                    ),
-                    TextFormField(
-                      validator: (value) => this._validateField(value),
-                      controller: this._socketServerLocationController,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.link),
-                        hintText: 'example.com',
-                        labelText: 'Socket Server Location',
+                      TextFormField(
+                        validator: (value) => this._validateField(value),
+                        controller: this._socketServerLocationController,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.link),
+                          hintText: 'example.com',
+                          labelText: 'Socket Server Location',
+                        ),
                       ),
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      validator: (value) => this._validateField(value),
-                      controller: this._socketSecretController,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.key),
-                        labelText: 'Socket Server Secret value',
+                      TextFormField(
+                        obscureText: true,
+                        validator: (value) => this._validateField(value),
+                        controller: this._socketSecretController,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.key),
+                          labelText: 'Socket Server Secret value',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ]
+          ),
         ),
       ),
     );

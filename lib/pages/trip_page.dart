@@ -71,7 +71,7 @@ class _TripPageState extends State<TripPage> {
                         width: width,
                         child: FlutterMap(
                           options: MapOptions(
-                            bounds: LatLngBounds(this._getFirstCoordinate(carLogs), this._getLastCoordinate(carLogs)),
+                            bounds: this._getBounds(carLogs),
                             boundsOptions: FitBoundsOptions(padding: EdgeInsets.all(8.0)),
                             zoom: 5,
                             interactiveFlags: InteractiveFlag.none
@@ -373,6 +373,14 @@ class _TripPageState extends State<TripPage> {
         } ()
     );
 
+  }
+
+  LatLngBounds _getBounds(List<CarLog> carLogs) {
+    List<double> longitudes = carLogs.where((element) => element.gpsLongitude != null).map((e) => e.gpsLongitude!).toList();
+    longitudes.sort();
+    List<double> latitudes = carLogs.where((element) => element.gpsLatitude != null).map((e) => e.gpsLatitude!).toList();
+    latitudes.sort();
+    return LatLngBounds(LatLng(latitudes.first, longitudes.first), LatLng(latitudes.last, longitudes.last));
   }
 
   LatLng _getFirstCoordinate(List<CarLog> carLogs) {

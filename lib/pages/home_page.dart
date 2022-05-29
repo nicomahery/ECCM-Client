@@ -37,7 +37,12 @@ class _HomePageState extends State<HomePage> {
               height: height * 0.2,
               child: ElevatedButton(
                   onPressed: () => context.push(TripListPage.PATH),
-                  child: Text('Trips')
+                  child: Text(
+                    'Trips',
+                    style: TextStyle(
+                      fontSize: width * 0.15
+                    ),
+                  )
               ),
             ),
             Spacer(),
@@ -46,7 +51,12 @@ class _HomePageState extends State<HomePage> {
               height: height * 0.2,
               child: ElevatedButton(
                   onPressed: () => context.push(LivePage.PATH),
-                  child: Text('Live')
+                  child: Text(
+                      'Live',
+                    style: TextStyle(
+                        fontSize: width * 0.15
+                    ),
+                  )
               ),
             ),
             Spacer(),
