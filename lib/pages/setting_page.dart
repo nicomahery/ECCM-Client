@@ -113,8 +113,9 @@ class _SettingPageState extends State<SettingPage> {
                   this._validateAPIConnection(),
                   this._validateSocketConnection()
                 ]);
-
-                setState(() {});
+                if (this.mounted) {
+                  setState(() {});
+                }
                 await Future.delayed(Duration(microseconds: 500));
                 if (results.first) {
                   this._configService.saveParametersToPreferences();

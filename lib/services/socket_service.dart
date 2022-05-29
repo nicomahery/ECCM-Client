@@ -14,10 +14,12 @@ class SocketService {
 
   void connectSocket() {
     if (this._configService.webSocketServerLocation != null && this._configService.webSocketServerSecret != null && !this._isConnectedToServer) {
+      print("trying to connect");
       this._socketServer = SocketIO.io(
         'ws://${this._configService.webSocketServerLocation}',
         {
           'transports': ['websocket'],
+          'autoConnect': false,
           'auth': {
             'secret': this._configService.webSocketServerSecret
           },
@@ -27,14 +29,21 @@ class SocketService {
         print('disconnected from server');
         this._isConnectedToServer = false;
       });
+      print("connecting this._socketServer != null: ${this._socketServer != null} this._socketServer!.connected ${this._socketServer?.connected}");
+      if (this._socketServer != null && !this._socketServer!.connected) {
+        this._socketServer!.connect();
+      }
       this._isConnectedToServer = true;
     }
   }
 
   void disconnectSocket() {
-    this._socketServer?.dispose();
-    this._socketServer = null;
-    this._isConnectedToServer = false;
+    if (this._isConnectedToServer || this._socketServer != null) {
+      print("disconnecting");
+      this._socketServer?.disconnect();
+      this._socketServer = null;
+      this._isConnectedToServer = false;
+    }
   }
 
   Future<bool> testConnection() async {
