@@ -29,7 +29,6 @@ class SocketService {
         print('disconnected from server');
         this._isConnectedToServer = false;
       });
-      print("connecting this._socketServer != null: ${this._socketServer != null} this._socketServer!.connected ${this._socketServer?.connected}");
       if (this._socketServer != null && !this._socketServer!.connected) {
         this._socketServer!.connect();
       }
