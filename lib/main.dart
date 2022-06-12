@@ -65,7 +65,57 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       title: 'ECCM Client',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
+        splashColor: Colors.grey,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade700,
+          foregroundColor: Colors.white
+        ),
+        cardTheme: CardTheme(
+          color: Colors.black,
+        ),
+        dividerTheme: DividerThemeData(
+          color: Colors.white,
+          thickness: 2
+        ),
+
+        inputDecorationTheme: InputDecorationTheme(
+          iconColor: Colors.grey,
+          hintStyle: TextStyle(
+            color: Colors.grey,
+          ),
+          helperStyle: TextStyle(
+            color: Colors.grey,
+          ),
+          suffixStyle: TextStyle(
+            color: Colors.grey,
+          ),
+          labelStyle: TextStyle(
+            color: Colors.grey,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Colors.grey,
+                style: BorderStyle.solid
+            ),
+            borderRadius: const BorderRadius.all(Radius.zero)
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Colors.white,
+                style: BorderStyle.solid
+            ),
+            borderRadius: const BorderRadius.all(Radius.zero)
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.grey,
+              style: BorderStyle.solid
+            ),
+            borderRadius: const BorderRadius.all(Radius.zero)
+          ),
+
+        )
       ),
       routerDelegate: this._router.routerDelegate,
       routeInformationParser: this._router.routeInformationParser,

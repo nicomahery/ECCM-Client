@@ -20,7 +20,7 @@ class _TripListPageState extends State<TripListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('Trip list'),
         actions: [
@@ -46,11 +46,14 @@ class _TripListPageState extends State<TripListPage> {
 
             List<Trip> trips = snapshot.data!;
             trips.sort((a, b) => b.startTime.compareTo(a.startTime));
-            return ListView.builder(
+            return ListView.separated(
                 itemCount: trips.length,
                 itemBuilder: (context, index) {
                   return TripSummaryCardWidget(trip: snapshot.data![index]);
-                }
+                },
+              separatorBuilder: (BuildContext context, int index) {
+                  return Divider();
+              },
             );
           },
           future: this._tripService.getAllTrips(),

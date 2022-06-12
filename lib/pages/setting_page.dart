@@ -102,7 +102,7 @@ class _SettingPageState extends State<SettingPage> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('Setting'),
         actions: [
@@ -145,30 +145,39 @@ class _SettingPageState extends State<SettingPage> {
                             fontWeight: FontWeight.bold
                         ),
                       ),
-                      TextFormField(
-                        validator: (value) => this._validateField(value),
-                        controller: this._apiLocationController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.link),
-                          hintText: 'example.com',
-                          labelText: 'API Location *',
+                      Padding(
+                        padding: EdgeInsets.only(top: height * 0.02),
+                        child: TextFormField(
+                          validator: (value) => this._validateField(value),
+                          controller: this._apiLocationController,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.link),
+                            hintText: 'example.com',
+                            labelText: 'API Location *',
+                          ),
                         ),
                       ),
-                      TextFormField(
-                        validator: (value) => this._validateField(value),
-                        controller: this._apiSecretHeaderController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.short_text),
-                          labelText: 'Secret header *',
+                      Padding(
+                        padding: EdgeInsets.only(top: height * 0.012),
+                        child: TextFormField(
+                          validator: (value) => this._validateField(value),
+                          controller: this._apiSecretHeaderController,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.short_text),
+                            labelText: 'Secret header *',
+                          ),
                         ),
                       ),
-                      TextFormField(
-                        obscureText: true,
-                        validator: (value) => this._validateField(value),
-                        controller: this._apiSecretController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.key),
-                          labelText: 'Secret value *',
+                      Padding(
+                        padding: EdgeInsets.only(top: height * 0.012),
+                        child: TextFormField(
+                          obscureText: true,
+                          validator: (value) => this._validateField(value),
+                          controller: this._apiSecretController,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.key),
+                            labelText: 'Secret value *',
+                          ),
                         ),
                       ),
                     ],
@@ -190,22 +199,29 @@ class _SettingPageState extends State<SettingPage> {
                             fontWeight: FontWeight.bold
                         ),
                       ),
-                      TextFormField(
-                        validator: (value) => this._validateField(value),
-                        controller: this._socketServerLocationController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.link),
-                          hintText: 'example.com',
-                          labelText: 'Socket Server Location',
+                      Padding(
+                        padding: EdgeInsets.only(top: height * 0.02),
+                        child: TextFormField(
+                          validator: (value) => this._validateField(value),
+                          controller: this._socketServerLocationController,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.link),
+                            hintText: 'example.com',
+                            labelText: 'Socket Server Location',
+                          ),
                         ),
                       ),
-                      TextFormField(
-                        obscureText: true,
-                        validator: (value) => this._validateField(value),
-                        controller: this._socketSecretController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.key),
-                          labelText: 'Socket Server Secret value',
+                      Padding(
+                        padding: EdgeInsets.only(top: height * 0.012),
+                        child: TextFormField(
+                          obscureText: true,
+                          validator: (value) => this._validateField(value),
+                          controller: this._socketSecretController,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.key),
+                            labelText: 'Socket Server Secret value',
+
+                          ),
                         ),
                       ),
                     ],

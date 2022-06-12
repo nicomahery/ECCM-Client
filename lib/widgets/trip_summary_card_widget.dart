@@ -16,15 +16,30 @@ class TripSummaryCardWidget extends StatelessWidget {
     return Card(
       child: InkWell(
         child: ListTile(
-          leading: Icon(Icons.route),
-          title: Text(Trip.convertDateTime(this.trip.startTime, DATE_TIME_DISPLAY_FORMAT)),
-          subtitle: Text('${this.trip.duration.inMinutes}min'),
-          trailing: Icon(Icons.arrow_forward_ios),
+          leading: Icon(
+            Icons.route,
+            color: Colors.white,
+          ),
+          title: Text(
+            Trip.convertDateTime(this.trip.startTime, DATE_TIME_DISPLAY_FORMAT),
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          subtitle: Text('${this.trip.duration.inMinutes}min',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          trailing: Icon(Icons.arrow_forward_ios,
+            color: Colors.white,
+          ),
         ),
         onTap: () {
           context.push(TripPage.PATH + '/${this.trip.id}');
         },
       ),
+
     );
   }
 }

@@ -32,7 +32,7 @@ class _TripPageState extends State<TripPage> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         appBar: AppBar(
           title: const Text('Trip summary'),
         ),

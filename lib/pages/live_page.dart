@@ -41,7 +41,7 @@ class _LivePageState extends State<LivePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('Live Page'),
       ),
@@ -64,7 +64,9 @@ class _LivePageState extends State<LivePage> {
                   } else if (snapshot.hasError) {
                     return Icon(Icons.error, color: Colors.red,);
                   }
-                  return CircularProgressIndicator();
+                  return CircularProgressIndicator(
+                    color: Colors.white,
+                  );
                 },
               ),
               StreamBuilder<String?>(
@@ -81,7 +83,9 @@ class _LivePageState extends State<LivePage> {
                   } else if (snapshot.hasError) {
                     return Icon(Icons.error, color: Colors.red,);
                   }
-                  return CircularProgressIndicator();
+                  return CircularProgressIndicator(
+                    color: Colors.white,
+                  );
                 },
               ),
               StreamBuilder<String?>(
