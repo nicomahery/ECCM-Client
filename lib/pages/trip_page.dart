@@ -143,7 +143,8 @@ class _TripPageState extends State<TripPage> {
                                       child: Text(
                                         Trip.convertDateTime(this.widget.trip!.startTime, DATE_TIME_DISPLAY_FORMAT),
                                         style: TextStyle(
-                                          fontSize: width * 0.04
+                                          fontSize: width * 0.04,
+                                          color: Colors.white
                                         ),
                                       ),
                                     ),
@@ -161,7 +162,8 @@ class _TripPageState extends State<TripPage> {
                                       child: Text(
                                         Trip.convertDateTime(this.widget.trip!.endTime, DATE_TIME_DISPLAY_FORMAT),
                                         style: TextStyle(
-                                          fontSize: width * 0.04
+                                          fontSize: width * 0.04,
+                                          color: Colors.white
                                         ),
                                       ),
                                     ),
@@ -198,12 +200,14 @@ class _TripPageState extends State<TripPage> {
                                           return '${snapshot.data!.toStringAsFixed(0)}m';
                                         }(),
                                         style: TextStyle(
-                                            fontSize: width * 0.04
+                                            fontSize: width * 0.04,
+                                            color: Colors.white
                                         ),
                                       ),
                                       Icon(
                                         Icons.route,
                                         size: width * 0.04,
+                                        color: Colors.white
                                       )
                                     ],
                                   );
@@ -215,12 +219,14 @@ class _TripPageState extends State<TripPage> {
                                   Text(
                                     this.widget.trip!.getDurationString(),
                                     style: TextStyle(
-                                        fontSize: width * 0.04
+                                        fontSize: width * 0.04,
+                                        color: Colors.white
                                     ),
                                   ),
                                   Icon(
                                     Icons.access_alarm,
                                     size: width * 0.04,
+                                    color: Colors.white,
                                   )
                                 ],
                               ),
@@ -278,14 +284,13 @@ class _TripPageState extends State<TripPage> {
                             height: height * 0.3,
                             child: LineChart(
                                 LineChartData(
-
                                   minY: metric.minValue.toDouble(),
                                   maxY: metric.maxValue.toDouble(),
                                   minX: 1,
                                   maxX: metric.data2.length.toDouble(),
                                   borderData: FlBorderData(
                                       show: true,
-                                      border: Border.all(color: const Color(0xff37434d), width: 1)),
+                                      border: Border.all(color: Colors.white, width: 1)),
                                   gridData: FlGridData(
                                     show: true,
                                     drawVerticalLine: true,
@@ -293,13 +298,13 @@ class _TripPageState extends State<TripPage> {
                                     verticalInterval: intervalX,
                                     getDrawingHorizontalLine: (value) {
                                       return FlLine(
-                                        color: const Color(0xff37434d),
+                                        color: Colors.white,
                                         strokeWidth: 1,
                                       );
                                     },
                                     getDrawingVerticalLine: (value) {
                                       return FlLine(
-                                        color: const Color(0xff37434d),
+                                        color: Colors.white,
                                         strokeWidth: 1,
                                       );
                                     },
@@ -320,7 +325,7 @@ class _TripPageState extends State<TripPage> {
                                           return Text(
                                               value.toInt().toString(),
                                               style: TextStyle(
-                                                color: Color(0xff67727d),
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15,
                                               ),
@@ -341,7 +346,7 @@ class _TripPageState extends State<TripPage> {
                                             child: Text(
                                                 new DateFormat(intervalX == 1 ? HOUR_WITH_SECONDS_DISPLAY_FORMAT : HOUR_DISPLAY_FORMAT).format(metric.data.keys.toList()[value.toInt() - 1]),
                                                 style: TextStyle(
-                                                  color: Color(0xff68737d),
+                                                  color: Colors.white,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
                                                 ),

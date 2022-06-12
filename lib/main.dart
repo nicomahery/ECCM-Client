@@ -78,7 +78,20 @@ class App extends StatelessWidget {
           color: Colors.white,
           thickness: 2
         ),
-
+        textTheme: TextTheme(
+          bodyText1: TextStyle(
+              color: Colors.white
+          ),
+          headline1: TextStyle(
+              color: Colors.white
+          ),
+          labelMedium: TextStyle(
+              color: Colors.white
+          ),
+          subtitle1: TextStyle(
+            color: Colors.white
+          )
+        ),
         inputDecorationTheme: InputDecorationTheme(
           iconColor: Colors.grey,
           hintStyle: TextStyle(

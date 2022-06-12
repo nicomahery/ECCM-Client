@@ -53,17 +53,13 @@ class _SettingPageState extends State<SettingPage> {
       this._configService.apiLocation = this._apiLocationController.value.text;
       this._configService.apiSecretHeader = this._apiSecretHeaderController.value.text;
       this._configService.apiSecret = this._apiSecretController.value.text;
-      if (await this._apiService.ping()) {
-        this._apiConnectionStatusColor = Colors.green;
-        return true;
+      bool isTestSuccessful = await this._apiService.ping();
+      this._apiConnectionStatusColor = isTestSuccessful ? Colors.green: Colors.red;
+      if (this.mounted) {
+        setState(() {});
       }
-      else {
-        this._apiConnectionStatusColor = Colors.red;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('API not working')));
-        return false;
-      }
+      return isTestSuccessful;
     }
-    this._apiConnectionStatusColor = Colors.grey;
     return false;
   }
 
@@ -73,16 +69,13 @@ class _SettingPageState extends State<SettingPage> {
       this._configService.webSocketServerLocation = this._socketServerLocationController.value.text;
       this._configService.webSocketServerSecret = this._socketSecretController.value.text;
       this._socketService.connectSocket();
-      if (await this._socketService.testConnection()) {
-        this._socketConnectionStatusColor = Colors.green;
-        return true;
+      bool isTestSuccessful = await this._socketService.testConnection();
+      this._socketConnectionStatusColor = isTestSuccessful ? Colors.green : Colors.red;
+      if (this.mounted) {
+        setState(() {});
       }
-      else {
-        this._socketConnectionStatusColor = Colors.red;
-        return false;
-      }
+      return isTestSuccessful;
     }
-    this._socketConnectionStatusColor = Colors.grey;
     return false;
   }
 
@@ -119,10 +112,11 @@ class _SettingPageState extends State<SettingPage> {
                 await Future.delayed(Duration(microseconds: 500));
                 if (results.first) {
                   this._configService.saveParametersToPreferences();
+                  await Future.delayed(Duration(seconds: 2));
                   context.go(HomePage.PATH);
                 }
               },
-              icon: const Icon(Icons.check)
+              icon: const Icon(Icons.check),
           )
         ],
       ),
