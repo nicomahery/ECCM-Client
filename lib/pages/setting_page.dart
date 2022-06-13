@@ -109,10 +109,9 @@ class _SettingPageState extends State<SettingPage> {
                 if (this.mounted) {
                   setState(() {});
                 }
-                await Future.delayed(Duration(microseconds: 500));
                 if (results.first) {
                   this._configService.saveParametersToPreferences();
-                  await Future.delayed(Duration(seconds: 2));
+                  await Future.delayed(Duration(milliseconds: 1500));
                   context.go(HomePage.PATH);
                 }
               },
