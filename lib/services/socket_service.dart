@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:socket_io_client/socket_io_client.dart' as SocketIO;
+import '../entities/status_list.dart';
 import '../utils/get_it_instance.dart';
 import '../utils/static_const_values.dart';
 import 'config_service.dart';
@@ -7,6 +10,7 @@ class SocketService {
   late ConfigService _configService;
   SocketIO.Socket? _socketServer;
   bool _isConnectedToServer = false;
+  StreamController<StatusList?>? _statusStreamController;
 
   SocketService() {
     this._configService = locator<ConfigService>();
@@ -102,5 +106,30 @@ class SocketService {
     ]);
     exit = true;
     return ret == 'KO' ? null : ret;
+  }
+
+  Stream<StatusList?>? subscribeToStatusUpdates() {
+    this._serverSafetyChecks();
+    if (this._socketServer == null || !this._isConnectedToServer) {
+      return null;
+    }
+    if (this._statusStreamController == null) {
+      this._statusStreamController = StreamController<StatusList?>();
+      this._socketServer!.on(
+          'status',
+              (data) {
+            StatusList? statusList;
+            if (data != null) {
+              try {
+                statusList = StatusList.fromJson(data);
+              }
+              catch (e) {
+                print('Failed StatusList from this json: $data');
+              }
+            }
+            this._statusStreamController!.sink.add(statusList);
+          });
+    }
+    return this._statusStreamController!.stream;
   }
 }

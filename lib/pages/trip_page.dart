@@ -31,6 +31,8 @@ class _TripPageState extends State<TripPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    double iconSize = width < height ? width * 0.04 : height * 0.03;
+    double textSize = width < height ? width * 0.04 : height * 0.03;
     return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
@@ -84,7 +86,7 @@ class _TripPageState extends State<TripPage> {
                                 return Text(
                                   "© OpenStreetMap contributors",
                                   style: TextStyle(
-                                      fontSize: width * 0.025
+                                      fontSize: textSize * 0.8
                                   ),
                                 );
                               },
@@ -136,14 +138,14 @@ class _TripPageState extends State<TripPage> {
                                     Icon(
                                       Icons.location_on,
                                       color: Colors.blueAccent,
-                                      size: width * 0.04,
+                                      size: iconSize,
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: width * 0.02),
                                       child: Text(
                                         Trip.convertDateTime(this.widget.trip!.startTime, DATE_TIME_DISPLAY_FORMAT),
                                         style: TextStyle(
-                                          fontSize: width * 0.04,
+                                          fontSize: textSize,
                                           color: Colors.white
                                         ),
                                       ),
@@ -155,14 +157,14 @@ class _TripPageState extends State<TripPage> {
                                     Icon(
                                       Icons.location_on,
                                       color: Colors.red,
-                                      size: width * 0.04,
+                                      size: iconSize,
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: width * 0.02),
                                       child: Text(
                                         Trip.convertDateTime(this.widget.trip!.endTime, DATE_TIME_DISPLAY_FORMAT),
                                         style: TextStyle(
-                                          fontSize: width * 0.04,
+                                          fontSize: textSize,
                                           color: Colors.white
                                         ),
                                       ),
@@ -200,13 +202,13 @@ class _TripPageState extends State<TripPage> {
                                           return '${snapshot.data!.toStringAsFixed(0)}m';
                                         }(),
                                         style: TextStyle(
-                                            fontSize: width * 0.04,
+                                            fontSize: textSize,
                                             color: Colors.white
                                         ),
                                       ),
                                       Icon(
                                         Icons.route,
-                                        size: width * 0.04,
+                                        size: iconSize,
                                         color: Colors.white
                                       )
                                     ],
@@ -219,13 +221,13 @@ class _TripPageState extends State<TripPage> {
                                   Text(
                                     this.widget.trip!.getDurationString(),
                                     style: TextStyle(
-                                        fontSize: width * 0.04,
+                                        fontSize: textSize,
                                         color: Colors.white
                                     ),
                                   ),
                                   Icon(
                                     Icons.access_alarm,
-                                    size: width * 0.04,
+                                    size: iconSize,
                                     color: Colors.white,
                                   )
                                 ],

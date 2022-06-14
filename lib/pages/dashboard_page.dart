@@ -116,78 +116,56 @@ class DashboardPage extends StatelessWidget {
                 labelPosition: LabelPosition.RIGHT,
                 gaugeType: GaugeType.BIG_ARC,
                 labelText: COMMAND_TO_LABEL_MAP['INTAKE_PRESSURE'],
-                unitText: 'r/min',
+                unitText: 'kPa',
               ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: height * 0.02),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                color: Colors.grey,
+                height: 5,
+                width: width * 0.55,
+              ),
+              Container(
+                color: Colors.grey,
+                height: 5,
+                width: width * 0.33,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: height * 0.028),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                color: Colors.blue,
+                height: height * 0.2,
+                width: width * 0.57,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                ),
+              ),
+              Container(
+                color: Colors.grey,
+                height: height * 0.2,
+                width: 5,
+              ),
+              Container(
+                color: Colors.blue,
+                height: height * 0.2,
+                width: width * 0.35,
+              )
             ],
           ),
         ),
       ],
     );
   }
-
-  /*Widget test() {
-    return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            StreamBuilder<String?>(
-              stream: this.valueStream('SPEED'),
-              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data == null) {
-                    return Text('XX km/h', style: TextStyle(color: Colors.white));
-                  }
-                  else {
-                    return Text('${snapshot.data!} km/h', style: TextStyle(color: Colors.white));
-                  }
-
-                } else if (snapshot.hasError) {
-                  return Icon(Icons.error, color: Colors.red,);
-                }
-                return CircularProgressIndicator(
-                  color: Colors.white,
-                );
-              },
-            ),
-            StreamBuilder<String?>(
-              stream: this.valueStream('RPM'),
-              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data == null) {
-                    return Text('XX rpm', style: TextStyle(color: Colors.white));
-                  }
-                  else {
-                    return Text('${snapshot.data!} rpm', style: TextStyle(color: Colors.white));
-                  }
-
-                } else if (snapshot.hasError) {
-                  return Icon(Icons.error, color: Colors.red,);
-                }
-                return CircularProgressIndicator(
-                  color: Colors.white,
-                );
-              },
-            ),
-            StreamBuilder<String?>(
-              stream: this.valueStream('COOLANT_TEMP'),
-              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data == null) {
-                    return Text('XX C°', style: TextStyle(color: Colors.white),);
-                  }
-                  else {
-                    return Text('${snapshot.data!} C°', style: TextStyle(color: Colors.white));
-                  }
-
-                } else if (snapshot.hasError) {
-                  return Icon(Icons.error, color: Colors.red,);
-                }
-                return CircularProgressIndicator();
-              },
-            ),
-          ],
-        )
-    );
-  }*/
 }

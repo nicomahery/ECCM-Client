@@ -1,6 +1,6 @@
 import 'package:eccm_client/utils/static_const_values.dart';
-import 'package:eccm_widget/widgets/BigArcGaugeWidget.dart';
-import 'package:eccm_widget/widgets/DemiCircularGaugeWidget.dart';
+import 'package:eccm_widget/widgets/big_arc_gauge_widget.dart';
+import 'package:eccm_widget/widgets/demi_circular_gauge_widget.dart';
 import 'package:flutter/material.dart';
 
 class GaugeWidget extends StatelessWidget {

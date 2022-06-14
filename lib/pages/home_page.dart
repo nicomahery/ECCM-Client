@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     'TRIPS',
                     style: TextStyle(
-                      fontSize: width * 0.15,
+                      fontSize: width < height ? width * 0.15 : height * 0.12,
                       color: Colors.white,
                       fontWeight: FontWeight.w300
                     ),
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                       'LIVE',
                     style: TextStyle(
-                        fontSize: width * 0.15,
+                        fontSize: width < height ? width * 0.15 : height * 0.12,
                         color: Colors.white,
                         fontWeight: FontWeight.w300
                     ),

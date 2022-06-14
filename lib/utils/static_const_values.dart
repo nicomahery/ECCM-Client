@@ -94,7 +94,7 @@ const Map COMMAND_TO_TITLE_MAP = {
   'FUEL_RATE': "FUEL RATE (liters per hour)"
 };
 const Map COMMAND_TO_LABEL_MAP = {
-  'ENGINE_LOAD': "ENG L",
+  'ENGINE_LOAD': "ENG LOAD",
   'COOLANT_TEMP': "COOLANT",
   'SHORT_FUEL_TRIM_1': "S FUEL 1",
   'LONG_FUEL_TRIM_1': "L FUEL 1",
