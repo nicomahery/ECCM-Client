@@ -11,6 +11,7 @@ class SocketService {
   SocketIO.Socket? _socketServer;
   bool _isConnectedToServer = false;
   StreamController<StatusList?>? _statusStreamController;
+  Stream<StatusList?>? _statusStreamBroadcast;
 
   SocketService() {
     this._configService = locator<ConfigService>();
@@ -115,21 +116,36 @@ class SocketService {
     }
     if (this._statusStreamController == null) {
       this._statusStreamController = StreamController<StatusList?>();
+      if (this._statusStreamBroadcast == null) {
+        this._statusStreamBroadcast =
+            this._statusStreamController!.stream.asBroadcastStream(
+            onCancel: (subscription) {
+              print('NO LISTENER $subscription');
+              subscription.pause();
+            },
+            onListen: (subscription) {
+              print('NEW LISTENER $subscription');
+              subscription.resume();
+            },
+        );
+      }
       this._socketServer!.on(
           'status',
               (data) {
+            print('Status received $data');
             StatusList? statusList;
             if (data != null) {
               try {
                 statusList = StatusList.fromJson(data);
               }
               catch (e) {
+                print(e);
                 print('Failed StatusList from this json: $data');
               }
             }
             this._statusStreamController!.sink.add(statusList);
           });
     }
-    return this._statusStreamController!.stream;
+    return this._statusStreamBroadcast;
   }
 }

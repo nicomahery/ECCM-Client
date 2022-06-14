@@ -4,6 +4,7 @@ import '../services/socket_service.dart';
 import '../utils/get_it_instance.dart';
 import '../utils/static_const_values.dart';
 import '../widgets/gauge_widget.dart';
+import '../widgets/message_list_widget.dart';
 
 class DashboardPage extends StatelessWidget {
   DashboardPage({Key? key}) : super(key: key);
@@ -144,13 +145,10 @@ class DashboardPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                color: Colors.blue,
+              MessageListWidget(
                 height: height * 0.2,
                 width: width * 0.57,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                ),
+                stream: this._socketService.subscribeToStatusUpdates(),
               ),
               Container(
                 color: Colors.grey,

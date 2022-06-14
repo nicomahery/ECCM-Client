@@ -7,9 +7,9 @@ class StatusList {
 
   factory StatusList.fromJson(Map<String, dynamic> json) {
     return StatusList(
-        json['errors'] as List<String>,
-        json['warnings'] as List<String>,
-        json['info'] as List<String>,
+        (json['errors'] as List).map((e) => e.toString()).toList(),
+        (json['warnings'] as List).map((e) => e.toString()).toList(),
+        (json['info'] as List).map((e) => e.toString()).toList(),
     );
   }
 }
