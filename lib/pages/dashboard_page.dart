@@ -155,10 +155,10 @@ class DashboardPage extends StatelessWidget {
                 height: height * 0.2,
                 width: 5,
               ),
-              Container(
-                color: Colors.blue,
+              MessageListWidget(
                 height: height * 0.2,
                 width: width * 0.35,
+                stream: this._socketService.subscribeToStatusUpdates(),
               )
             ],
           ),

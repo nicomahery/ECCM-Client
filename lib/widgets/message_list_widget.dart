@@ -27,7 +27,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double messageSize = this.widget.height * 0.15;
+    double messageSize = MediaQuery.of(context).size.width * 0.035;
     return Container(
       width: this.widget.width,
       height: this.widget.height,

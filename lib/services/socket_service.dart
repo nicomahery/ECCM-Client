@@ -120,11 +120,9 @@ class SocketService {
         this._statusStreamBroadcast =
             this._statusStreamController!.stream.asBroadcastStream(
             onCancel: (subscription) {
-              print('NO LISTENER $subscription');
               subscription.pause();
             },
             onListen: (subscription) {
-              print('NEW LISTENER $subscription');
               subscription.resume();
             },
         );
@@ -132,7 +130,6 @@ class SocketService {
       this._socketServer!.on(
           'status',
               (data) {
-            print('Status received $data');
             StatusList? statusList;
             if (data != null) {
               try {
