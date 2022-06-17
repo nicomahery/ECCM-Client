@@ -123,6 +123,7 @@ class SocketService {
               subscription.pause();
             },
             onListen: (subscription) {
+              this.requestLastStatus();
               subscription.resume();
             },
         );
@@ -144,5 +145,21 @@ class SocketService {
           });
     }
     return this._statusStreamBroadcast;
+  }
+
+  void requestLastStatus() async {
+    this._serverSafetyChecks();
+    if (this._socketServer == null || !this._isConnectedToServer) {
+      return null;
+    }
+    this._socketServer?.emit('query_last_status');
+  }
+
+  void syncFile(bool isRecordingRestarted) async {
+    this._serverSafetyChecks();
+    if (this._socketServer == null || !this._isConnectedToServer) {
+      return null;
+    }
+    this._socketServer?.emit('sync_file', isRecordingRestarted.toString());
   }
 }

@@ -112,7 +112,7 @@ class DashboardPage extends StatelessWidget {
                 width: gaugeSize,
                 minValue: 0,
                 maxValue: 300,
-                thresholdValue: 300,
+                thresholdValue: 200,
                 valueUpdateStream: this.valueStream('INTAKE_PRESSURE'),
                 labelPosition: LabelPosition.RIGHT,
                 gaugeType: GaugeType.BIG_ARC,
@@ -155,10 +155,64 @@ class DashboardPage extends StatelessWidget {
                 height: height * 0.2,
                 width: 5,
               ),
-              MessageListWidget(
+              Container(
                 height: height * 0.2,
                 width: width * 0.35,
-                stream: this._socketService.subscribeToStatusUpdates(),
+                child: ListView(
+                  children: [
+                    Container(
+                      height: (height * 0.2) * 0.4,
+                      child: OutlinedButton(
+                          onPressed: () => this._socketService.syncFile(false),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.grey.shade700),
+                            side: MaterialStateProperty.all(BorderSide(
+                                color: Colors.grey.shade400,
+                                width: height > width ? width * 0.008
+                                    : height * 0.009)
+                            ),
+                          ),
+                          child: Text(
+                            'SYNC STOP',
+                            style: TextStyle(
+                                fontSize: width > height ? width * 0.025 : height * 0.03,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300
+                            ),
+                            textAlign: TextAlign.center
+                          )
+                      ),
+                    ),
+                    Container(
+                      height: (height * 0.2) * 0.1,
+                    ),
+                    Container(
+                      height: (height * 0.2) * 0.4,
+                      child: OutlinedButton(
+                          onPressed: () => this._socketService.syncFile(true),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.grey.shade700),
+                            side: MaterialStateProperty.all(
+                                BorderSide(
+                                    color: Colors.grey.shade400,
+                                    width: height > width ? width * 0.008
+                                        : height * 0.009)
+                            ),
+                          ),
+                          child: Text(
+                            'SYNC RESTART',
+                            style: TextStyle(
+                              fontSize: width > height ? width * 0.025 : height * 0.03,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300,
+
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                      ),
+                    ),
+                  ],
+                ),
               )
             ],
           ),
