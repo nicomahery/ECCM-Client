@@ -16,6 +16,19 @@ class TripService {
     return this.trips;
   }
 
+  Future<List<Trip>?> getAllTripsPagination(int pageNumber, int pageSize) async {
+    List<Trip>? trips = await this._apiService.getAllTripsPagination(pageNumber, pageSize);
+    if (trips != null) {
+      if (this.trips == null || pageNumber == 0) {
+        this.trips = trips;
+      }
+      else {
+        this.trips!.addAll(trips);
+      }
+    }
+    return this.trips;
+  }
+
   Trip? getTripForId(String id) {
     return this.trips?.firstWhere((trip) => trip.id == id, orElse: null);
   }

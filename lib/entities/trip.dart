@@ -25,8 +25,8 @@ class Trip {
         json['id'],
         dateFormat.parse(json['startTime'], true),
         dateFormat.parse(json['endTime'], true) ,
-        json['startCoordinate'] != null ? LatLng(json['startCoordinate']['latitude'], json['startCoordinate']['longitude']) : null,
-        json['endCoordinate'] != null ? LatLng(json['endCoordinate']['latitude'], json['endCoordinate']['longitude']) : null
+        json['startCoordinate'] != null && json['startCoordinate']['latitude'] != null && json['startCoordinate']['longitude'] != null ? LatLng(json['startCoordinate']['latitude'], json['startCoordinate']['longitude']) : null,
+        json['endCoordinate'] != null && json['endCoordinate']['latitude'] != null && json['endCoordinate']['longitude'] != null  ? LatLng(json['endCoordinate']['latitude'], json['endCoordinate']['longitude']) : null
     );
   }
 
