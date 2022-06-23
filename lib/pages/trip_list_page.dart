@@ -29,11 +29,13 @@ class _TripListPageState extends State<TripListPage> {
         if (newTrips == null) {
           throw('Something went wrong');
         }
+        int newTripStartOffset = this._pagingController.itemList == null ? 0 : (this._pagingController.itemList!.length - 1);
+        int newTripEndOffset = newTripStartOffset + TripListPage.PAGE_SIZE;
         if (newTrips.length < TripListPage.PAGE_SIZE) {
-          this._pagingController.appendLastPage(newTrips);
+          this._pagingController.appendLastPage(newTrips.sublist(newTripStartOffset, newTripEndOffset));
         }
         else {
-          this._pagingController.appendPage(newTrips, pageKey+1);
+          this._pagingController.appendPage(newTrips.sublist(newTripStartOffset, newTripEndOffset), pageKey+1);
         }
       }
       catch (error) {

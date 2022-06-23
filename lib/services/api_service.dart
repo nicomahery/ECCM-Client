@@ -65,7 +65,9 @@ class ApiService {
       var response = await client.get(
           Uri.https(this._configService.apiLocation!,
               '${TRIPS_CONTROLLER_PATH}${PAGINATION_PATH}',
-              {'page':pageNumber.toString(), 'size':pageSize.toString()}),
+              {'page':pageNumber.toString(),
+                'size':pageSize.toString(),
+                'sort':'startTime,desc'}),
           headers: {
             'Content-Type': 'application/json',
             this._configService.apiSecretHeader!: this._configService.apiSecret!
