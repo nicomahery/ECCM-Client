@@ -33,7 +33,7 @@ class TripService {
     return this.trips?.firstWhere((trip) => trip.id == id, orElse: null);
   }
 
-  Future<List<CarLog>?> getCarLogsForId(String id) async {
+  Future<List<CarLog>?> getCarLogsForTripId(String id) async {
     Trip? trip = this.getTripForId(id);
     if (trip == null) {
       return null;
@@ -52,7 +52,7 @@ class TripService {
       return null;
     }
     if (trip.distance == null) {
-      List<CarLog>? carLogs = await this.getCarLogsForId(id);
+      List<CarLog>? carLogs = await this.getCarLogsForTripId(id);
       if (carLogs == null) {
         return null;
       }
@@ -69,23 +69,26 @@ class TripService {
     return trip.distance;
   }
 
-  Future<Metric?> getMetricById(String metric, String id) async {
-    List<CarLog>? carLogs = await this.getCarLogsForId(id);
+  Future<Metric?> getMetricByTripId(String metricName, String id) async {
+    List<CarLog>? carLogs = await this.getCarLogsForTripId(id);
     if (carLogs == null) {
       return null;
     }
 
-    switch (metric) {
-      case 'SPEED':
-        Map<DateTime, num> map = Map();
-        carLogs.forEach((e) {
-          if (e.speed != null) {
-            map.putIfAbsent(e.deviceTime, () => (e.speed!));
-          }
-        });
-        return Metric(title: metric, data: map);
-      default:
-        return null;
+    Map<DateTime, num> map = Map();
+    Metric? metric;
+
+    carLogs.forEach((e) {
+      num? value = e.getValueForMetricTitle(metricName);
+      if (value != null) {
+        map.putIfAbsent(e.deviceTime, () => value);
+      }
+    });
+
+    if (map.isNotEmpty) {
+      metric = Metric(title: metricName, dateTimeDataMap: map);
     }
+
+    return metric;
   }
 }

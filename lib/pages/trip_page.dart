@@ -27,6 +27,8 @@ class TripPage extends StatefulWidget {
 }
 
 class _TripPageState extends State<TripPage> {
+  String chartKey = CarLog.SPEED_KEY;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -46,7 +48,7 @@ class _TripPageState extends State<TripPage> {
           }
 
           return FutureBuilder(
-            future: this.widget._tripService.getCarLogsForId(this.widget.trip!.id),
+            future: this.widget._tripService.getCarLogsForTripId(this.widget.trip!.id),
             builder: (context, AsyncSnapshot<List<CarLog>?> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -241,22 +243,137 @@ class _TripPageState extends State<TripPage> {
                     DropdownButton<String>(
                       items: [
                         DropdownMenuItem(
-                          child: Text('test'),
-                          value: 'test',
+                          child: Text('SPEED'),
+                          value: CarLog.SPEED_KEY,
                         ),
                         DropdownMenuItem(
-                          child: Text('test2'),
-                          value: 'test2',
-                        )
+                          child: Text('RPM'),
+                          value: CarLog.RPM_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('ENG. LOAD'),
+                          value: CarLog.ENGINE_LOAD_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('COOLANT T'),
+                          value: CarLog.COOLANT_TEMP_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('INTAKE T'),
+                          value: CarLog.INTAKE_TEMP_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('INTAKE P'),
+                          value: CarLog.INTAKE_PRESSURE_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('BARO. P'),
+                          value: CarLog.BAROMETRIC_PRESSURE_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('TIMING ADVANCE'),
+                          value: CarLog.TIMING_ADVANCE_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('EVAP. PURGE'),
+                          value: CarLog.EVAPORATIVE_PURGE_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('CONT. MODULE V'),
+                          value: CarLog.CONTROL_MODULE_VOLTAGE_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('LONG FUEL TRIM1'),
+                          value: CarLog.LONG_FUEL_TRIM_1_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('LONG FUEL TRIM2'),
+                          value: CarLog.LONG_FUEL_TRIM_2_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('SHORT FUEL TRIM1'),
+                          value: CarLog.SHORT_FUEL_TRIM_1_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('SHORT FUEL TRIM2'),
+                          value: CarLog.SHORT_FUEL_TRIM_2_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('CATALYST T B1 S1'),
+                          value: CarLog.CATALYST_TEMP_B1_S1_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('CATALYST T B1 S2'),
+                          value: CarLog.CATALYST_TEMP_B1_S2_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('CATALYST T B2 S1'),
+                          value: CarLog.CATALYST_TEMP_B2_S1_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('CATALYST T B2 S2'),
+                          value: CarLog.CATALYST_TEMP_B2_S2_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('FUEL RAIL P ABS'),
+                          value: CarLog.FUEL_RAIL_PRESSURE_ABS_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('EGR ERROR'),
+                          value: CarLog.EGR_ERROR_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('REL. ACCEL POS'),
+                          value: CarLog.RELATIVE_ACCEL_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('REL. THROT POS'),
+                          value: CarLog.RELATIVE_THROTTLE_POS_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('MAF'),
+                          value: CarLog.MAF_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('MAX MAF'),
+                          value: CarLog.MAX_MAF_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('AIR FLOW R'),
+                          value: CarLog.AIR_FLOW_RATE_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('OIL T'),
+                          value: CarLog.OIL_TEMP_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('FUEL RATE'),
+                          value: CarLog.FUEL_RATE_KEY,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('AMB. AIR T'),
+                          value: CarLog.AMBIANT_AIR_TEMP_KEY,
+                        ),
                       ],
                       onChanged: (String? value) {
-                        print(value);
+                        if (this.mounted && value != null) {
+                          setState(() {
+                            this.chartKey = value;
+                          });
+                        }
                       },
-                      value: 'test',
-
+                      value: this.chartKey,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      dropdownColor: Colors.black,
+                      underline: Container(
+                        height: 2,
+                        color: Colors.grey,
+                      ),
                     ),
                     FutureBuilder(
-                        future: this.widget._tripService.getMetricById('SPEED', this.widget.trip!.id),
+                        future: this.widget._tripService.getMetricByTripId(this.chartKey, this.widget.trip!.id),
                         builder: (context,
                             AsyncSnapshot<Metric?> snapshot) {
                           if (snapshot.connectionState ==
@@ -271,15 +388,15 @@ class _TripPageState extends State<TripPage> {
                           }
                           if (snapshot.connectionState ==
                               ConnectionState.none || snapshot.data == null) {
-                            return Center(child: Text('No Metric'));
+                            return Center(child: Text('no data', style: TextStyle(color: Colors.white)));
                           }
 
                           Metric metric = snapshot.data!;
-                          if (metric.data.isEmpty) {
-                            return Center(child: Text('No Metric'));
+                          if (metric.dateTimeDataMap.isEmpty) {
+                            return Center(child: Text('no data', style: TextStyle(color: Colors.white)));
                           }
 
-                          double intervalX = (metric.data2.length) /  (this.widget.trip!.duration.inMinutes < 1 ? 1 : 3);
+                          double intervalX = (metric.indexDataMap.length) /  (this.widget.trip!.duration.inMinutes < 1 ? 1 : 3);
                           double intervalY = (metric.maxValue - metric.minValue) / ((metric.maxValue - metric.minValue) < 4? 3 : 4);
                           return Container(
                             width: width * 0.9,
@@ -289,7 +406,7 @@ class _TripPageState extends State<TripPage> {
                                   minY: metric.minValue.toDouble(),
                                   maxY: metric.maxValue.toDouble(),
                                   minX: 1,
-                                  maxX: metric.data2.length.toDouble(),
+                                  maxX: metric.indexDataMap.length.toDouble(),
                                   borderData: FlBorderData(
                                       show: true,
                                       border: Border.all(color: Colors.white, width: 1)),
@@ -346,7 +463,7 @@ class _TripPageState extends State<TripPage> {
                                           return Padding(
                                             padding: const EdgeInsets.only(top: 8.0),
                                             child: Text(
-                                                new DateFormat(intervalX == 1 ? HOUR_WITH_SECONDS_DISPLAY_FORMAT : HOUR_DISPLAY_FORMAT).format(metric.data.keys.toList()[value.toInt() - 1]),
+                                                new DateFormat(intervalX == 1 ? HOUR_WITH_SECONDS_DISPLAY_FORMAT : HOUR_DISPLAY_FORMAT).format(metric.dateTimeDataMap.keys.toList()[value.toInt() - 1]),
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,
@@ -361,7 +478,7 @@ class _TripPageState extends State<TripPage> {
                                   ),
                                   lineBarsData: [
                                     LineChartBarData(
-                                      spots: metric.data2.entries.map((e) => FlSpot(e.key.toDouble(), e.value.toDouble())).toList(),
+                                      spots: metric.indexDataMap.entries.map((e) => FlSpot(e.key.toDouble(), e.value.toDouble())).toList(),
                                       dotData: FlDotData(
                                         show: false,
                                       ),

@@ -1,7 +1,7 @@
 class Metric {
   String title;
-  Map<DateTime, num> data;
-  late Map<num, num> data2;
+  Map<DateTime, num> dateTimeDataMap;
+  late Map<num, num> indexDataMap;
   late double middleX;
   num? _maxValue;
   num? _minValue;
@@ -9,38 +9,38 @@ class Metric {
   DateTime? _maxDatetime;
   DateTime? _minDatetime;
 
-  Metric({required this.title, required this.data}) {
+  Metric({required this.title, required this.dateTimeDataMap}) {
     int i = 1;
-    this.data2 = Map();
-    this.data.forEach((key, value) {
-      this.data2.putIfAbsent(i, () => value);
+    this.indexDataMap = Map();
+    this.dateTimeDataMap.forEach((key, value) {
+      this.indexDataMap.putIfAbsent(i, () => value);
       i++;
     });
-    this.middleX = this.data.length / 2;
+    this.middleX = this.dateTimeDataMap.length / 2;
   }
 
   bool get isEmpty {
-    return this.data.isEmpty || this.data.length < 2;
+    return this.dateTimeDataMap.isEmpty || this.dateTimeDataMap.length < 2;
   }
 
   num get minValue {
     if (this._minValue == null) {
-      this._minValue = this.data.values.reduce((value, element) => element < value ? element : value);
+      this._minValue = this.dateTimeDataMap.values.reduce((value, element) => element < value ? element : value);
     }
     return this._minValue!;
   }
 
   num get maxValue {
     if (this._maxValue == null) {
-      this._maxValue = this.data.values.reduce((value, element) => element > value ? element : value);
+      this._maxValue = this.dateTimeDataMap.values.reduce((value, element) => element > value ? element : value);
     }
     return this._maxValue!;
   }
 
   num get meanValue {
     if (this._meanValue == null) {
-      this._meanValue = this.data.values.reduce((value, element) => element + value);
-      this._meanValue = this._meanValue! / this.data.length;
+      this._meanValue = this.dateTimeDataMap.values.reduce((value, element) => element + value);
+      this._meanValue = this._meanValue! / this.dateTimeDataMap.length;
     }
     return this._meanValue!;
   }
@@ -60,7 +60,7 @@ class Metric {
   }
 
   void _computeMinMaxDateTime() {
-    var list = this.data.keys.toList();
+    var list = this.dateTimeDataMap.keys.toList();
     list.sort((a, b) => a.compareTo(b));
     this._maxDatetime = list.last;
     this._minDatetime = list.first;
